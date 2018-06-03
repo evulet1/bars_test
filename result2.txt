@@ -1,0 +1,23 @@
+
+ОТВЕТ1:
+select count(c.AGENT), lp.FULLNAME, lp.FULLADDRESS from D_PERSMEDCARD c inner join D_BLOODGROUPE gr  on c.BLOODGROUPE=gr.ID  inner join d_lpu lp on lp.ID=c.LPU and gr.ID in (select id from D_BLOODGROUPE where BG_NAME = 'четвертая') group by c.LPU
+
+
+Ответ2:
+select count(ag.id) from d_agents ag left join d_persmedcard c on ag.ID=c.AGENT where c.CARD_NUMB='' or c.CARD_NUMB is null order by c.LPU
+
+Ответ3:
+select ag.SURNAME from d_agents ag left join d_persmedcard c on ag.ID=c.AGENT where c.CARD_NUMB='' or c.CARD_NUMB is null group by c.LPU
+
+
+Ответ4:
+select ag.FIRSTNAME, ag.SURNAME, ag.LASTNAME, c.CARD_NUMB from d_agents ag left join d_persmedcard c on ag.ID=c.AGENT where c.CARD_NUMB is not null and c.CARD_NUMB != '' order by ag.id
+
+
+ Ответ 5:
+ SELECT c.LPU,
+  SUM(ag.sex=0) w,
+  SUM(ag.sex<> 0) m,
+  COUNT(*) q,
+  SUM(ag.sex=0) / COUNT(*) * 100 persent_woman
+ FROM  d_persmedcard c left join d_agents ag on c.AGENT=ag.ID  group by lpu
